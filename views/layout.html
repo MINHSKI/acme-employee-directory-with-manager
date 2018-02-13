@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <link rel='stylesheet' href='/vendor/bootstrap/dist/css/bootstrap.css' />
+  </head>
+  <body>
+    <div class='container'>
+      <ul>
+        <li>
+          <a href='/'>Home</a>
+        </li>
+        <li>
+          <a href='/employees'>Employees</a>
+        </li>
+      </ul>
+      <div>
+        We have {{ employeeCount }} employees and {{ managerCount }} managers!
+      </div>
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

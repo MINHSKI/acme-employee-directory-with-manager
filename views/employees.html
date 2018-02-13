@@ -1,0 +1,35 @@
+{% extends './layout.html' %}
+{% block content %}
+    <form method='POST' action='/employees'>
+      Employee Name:
+      <input class='form-control' name='email' />
+      <br />
+      Manager:
+      <input name='managerEmail' class='form-control' />
+      <button>Create</button>
+    </form>
+    <hr />
+<ul class='list-group'>
+  {% for employee in employees %}
+  <li class='list-group-item'>
+    <form method='POST' action='/employees/{{employee.id}}?_method=PUT'>
+      Email Provider: {{ employee.emailProvider }}
+      <br />
+      Employee name: {{ employee.name }}
+      <br />
+      Employee Email:
+      <input class='form-control' value='{{ employee.email }}' name='email' />
+      Manager Email:
+      <input class='form-control' value='{% if employee.manager !== null %}{{ employee.manager.email}}{%endif%}' name='managerEmail' />
+      <button class='btn btn-primary'>Update</button>
+    </form>
+    <form method='POST' action='/employees/{{employee.id}}?_method=DELETE'>
+      <button class='btn btn-warning'>Delete</button>
+    </form>
+    {{ employee.email }} manages {% for manages in employee.manages %}{{ manages.email}}{% endfor %}
+    <hr />
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
