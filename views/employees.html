@@ -1,35 +1,53 @@
 {% extends './layout.html' %}
 {% block content %}
-    <form method='POST' action='/employees'>
-      Employee Name:
+    <hr />
+    <div style='display: flex; flex-wrap: wrap'>
+    <div style='width: 33%; background-color: #efefef;'>
+    <form method='POST' action='/employees' style='margin:10px;'>
+      <h5>Add an Employee</h5>
+      <strong>Employee Name:</strong>
       <input class='form-control' name='email' />
       <br />
-      Manager:
-      <input name='managerEmail' class='form-control' />
-      <button>Create</button>
+      <strong>Manager:</strong>
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+        {% for employee in employees %}
+          <option value='{{employee.id}}'>
+          {{employee.email }}
+          </option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Create</button>
     </form>
-    <hr />
-<ul class='list-group'>
+    </div>
   {% for employee in employees %}
-  <li class='list-group-item'>
-    <form method='POST' action='/employees/{{employee.id}}?_method=PUT'>
-      Email Provider: {{ employee.emailProvider }}
+  <div style='width:33%; padding: 10px;'>
+    <form method='POST' action='/employees/{{employee.id}}?_method=PUT' style='width: 90%'>
+      <strong>Email Provider:</strong> {{ employee.emailProvider }}
       <br />
-      Employee name: {{ employee.name }}
+      <strong>Employee name:</strong> {{ employee.name }}
       <br />
-      Employee Email:
+      <strong>Employee Email:</strong>
       <input class='form-control' value='{{ employee.email }}' name='email' />
       Manager Email:
-      <input class='form-control' value='{% if employee.manager !== null %}{{ employee.manager.email}}{%endif%}' name='managerEmail' />
-      <button class='btn btn-primary'>Update</button>
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+        {% for _employee in employees %}
+        <option {% if employee.managerId === _employee.id %} selected{% endif %} value='{{_employee.id}}'>
+          {{_employee.email }}
+          </option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Update</button>
     </form>
     <form method='POST' action='/employees/{{employee.id}}?_method=DELETE'>
       <button class='btn btn-warning'>Delete</button>
     </form>
-    {{ employee.email }} manages {% for manages in employee.manages %}{{ manages.email}}{% endfor %}
-    <hr />
-  </li>
+    {% if employee.manages.length %}
+    {{ employee.email }} manages {% for manages in employee.manages %}<span class='badge badge-success'>{{ manages.email}}</span> {% endfor %}
+    {% endif %}
+  </div>
   {% endfor %}
-</ul>
+    </div>
 
 {% endblock %}

@@ -40,29 +40,13 @@ app.get('/employees', (req, res, next)=> {
 
 
 app.post('/employees', (req, res, next)=> {
-  return Promise.all([
-    Employee.findOrCreateManager(req.body.managerEmail),
-    Employee.create({ email: req.body.email}),
-  ])
-  .then(([manager, employee])=> {
-    return employee.setManager(manager);
-  })
+  Employee.createFromForm(req.body)
   .then(()=> res.redirect('/employees'))
   .catch(next);
 });
 
 app.put('/employees/:id', (req, res, next)=> {
-  return Promise.all([
-    Employee.findOrCreateManager(req.body.managerEmail),
-    Employee.findById(req.params.id)
-      .then( employee => {
-        employee.email = req.body.email;
-        return employee.save();
-      })
-  ])
-  .then(([manager, employee])=> {
-    return employee.setManager(manager);
-  })
+  Employee.updateFromForm(req.params.id, req.body)
   .then(()=> res.redirect('/employees'))
   .catch(next);
 });

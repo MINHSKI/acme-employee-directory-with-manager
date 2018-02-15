@@ -4,16 +4,18 @@
   </head>
   <body>
     <div class='container'>
-      <ul>
-        <li>
-          <a href='/'>Home</a>
+      <ul class='nav nav-pills'>
+        <li class='nav-item'>
+          <a class='nav-link {% if path=== '/' %} active{% endif %}' href='/'>Home</a>
         </li>
-        <li>
-          <a href='/employees'>Employees</a>
+        <li class='nav-item'>
+          <a class='nav-link {% if path=== '/employees' %} active{% endif %}' href='/employees'>Employees</a>
         </li>
       </ul>
       <div>
+        <h2>
         We have {{ employeeCount }} employees and {{ managerCount }} managers!
+        </h2>
       </div>
       {% block content %}
       {% endblock %}

@@ -15,6 +15,11 @@ app.use(require('method-override')('_method'));
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
 
+app.use((req, res, next)=> {
+  res.locals.path = req.url;
+  next();
+});
+
 
 app.use('/', require('./routes'));
 

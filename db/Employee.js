@@ -21,20 +21,25 @@ const Employee = conn.define('employee', {
   }
 });
 
+Employee.createFromForm = function(body){
+  if(body.managerId === '-1'){
+    delete body.managerId;
+  }
+  return Employee.create(body);
+}
+
+Employee.updateFromForm = function(id, body){
+  if(body.managerId === '-1'){
+    body.managerId = null;
+  }
+  return Employee.findById(id)
+    .then( employee => {
+      Object.assign(employee, body);
+      return employee.save();
+    })
+}
+
 Employee.belongsTo(Employee, { as: 'manager' });
 Employee.hasMany(Employee, {as: 'manages', foreignKey: 'managerId'});
-
-Employee.findOrCreateManager = function(email){
-  if(!email){
-    return Promise.resolve(null);
-  }
-  return Employee.findOne({ where: { email: email }})
-    .then( manager => {
-      if(manager){
-        return manager;
-      }
-      return this.create({ email });
-    });
-};
 
 module.exports = Employee;
