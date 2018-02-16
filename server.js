@@ -23,6 +23,11 @@ app.use((req, res, next)=> {
 
 app.use('/', require('./routes'));
 
+app.use((err, req, res, next)=> {
+  console.log(err);
+  res.render('error', { error: err });
+});
+
 db.sync()
   .then(()=> db.seed());
 
