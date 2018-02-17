@@ -10,6 +10,8 @@ const seed = ()=> {
     Employee.create({ email: 'moe@gmail.com' }),
     Employee.create({ email: 'larry@gmail.com' }),
     Employee.create({ email: 'curly@gmail.com' }),
+    Employee.create({ email: 'jeremy_one@gmail.com' }),
+    Employee.create({ email: 'jeremy_two@yahoo.com' }),
   ])
   .then(([ moe, larry, curly])=> {
     return Promise.all([
